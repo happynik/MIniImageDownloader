@@ -1,4 +1,9 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Media.Imaging;
+using System;
+using System.Drawing;
+using System.Windows;
 
 namespace MIniImageDownloader.ViewModel
 {
@@ -16,31 +21,49 @@ namespace MIniImageDownloader.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private bool _isShow;
-        public bool IsShow
+        private IImageService _imageService;
+
+        private BitmapImage _imageSource;
+        public BitmapImage ImageSource
         {
-            get { return _isShow; }
+            get { return _imageSource; }
             set
             {
-                if (value == _isShow) return;
-                _isShow = value;
-                RaisePropertyChanged(() => IsShow);
+                if (_imageSource == value) return;
+                _imageSource = value;
+                RaisePropertyChanged(() => ImageSource);
             }
         }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(IImageService imageService)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            if (IsInDesignMode)
+            {
+                // Code runs in Blend --> create design time data.
+            }
+            else
+            {
+                // Code runs "for real"
+            }
+
+            _imageService = imageService;
+
+            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+        }
+
+        private async void NotificationMessageReceived(NotificationMessage message)
+        {
+            if (message.Notification == "ImageComplete")
+            {
+                await Application.Current.Dispatcher.BeginInvoke(
+                    new Action(() =>
+                    {
+                        ImageSource = _imageService.ImageResult;
+                    }));
+            }
         }
     }
 }

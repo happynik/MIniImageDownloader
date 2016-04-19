@@ -15,6 +15,7 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
+using MIniImageDownloader.Model;
 
 namespace MIniImageDownloader.ViewModel
 {
@@ -41,6 +42,8 @@ namespace MIniImageDownloader.ViewModel
             ////    // Create run time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
+
+            SimpleIoc.Default.Register<IImageService, ImageDownloader>();
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<TaskBarViewModel>();

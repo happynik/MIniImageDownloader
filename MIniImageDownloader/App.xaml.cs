@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Navigation;
 using System;
+using MIniImageDownloader.ViewModel;
 
 namespace MIniImageDownloader
 {
@@ -16,7 +17,10 @@ namespace MIniImageDownloader
         {
             base.OnStartup(e);
 
+            var locator = (ViewModelLocator)Current.Resources["Locator"];
+
             _taskBarIcon = (TaskbarIcon)FindResource("TaskBarIcon");
+            _taskBarIcon.DataContext = locator.TaskBar;
         }
 
         protected override void OnFragmentNavigation(FragmentNavigationEventArgs e)

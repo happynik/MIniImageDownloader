@@ -1,18 +1,20 @@
 <Application x:Class="MIniImageDownloader.App" 
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-             xmlns:local="clr-namespace:MIniImageDownloader" 
-             StartupUri="MainWindow.xaml" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:view_model="clr-namespace:MIniImageDownloader.ViewModel"
+             xmlns:local="clr-namespace:MIniImageDownloader"             
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"             
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             
              d1p1:Ignorable="d" 
-             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
-  <Application.Resources>
-    <ResourceDictionary>
-            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:MIniImageDownloader.ViewModel" />
-        
+             StartupUri="MainWindow.xaml" >
+    <Application.Resources>
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="TaskBarIconResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
+
+            <view_model:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />
+        </ResourceDictionary>
   </Application.Resources>
 </Application>
