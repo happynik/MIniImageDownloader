@@ -16,6 +16,18 @@ namespace MIniImageDownloader.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
+        private bool _isShow;
+        public bool IsShow
+        {
+            get { return _isShow; }
+            set
+            {
+                if (value == _isShow) return;
+                _isShow = value;
+                RaisePropertyChanged(() => IsShow);
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>

@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MIniImageDownloader"
+                    xmlns:view_model="clr-namespace:MIniImageDownloader.ViewModel"
+                    xmlns:tb="http://www.hardcodet.net/taskbar">
+    <ContextMenu x:Shared="false" x:Key="SysTrayMenu">
+        <MenuItem Header="Show Window" Command="{Binding DownloadImageCommand}" />
+        <Separator />
+        <MenuItem Header="Exit" Command="{Binding ExitApplicationCommand}" />
+    </ContextMenu>
+
+    <tb:TaskbarIcon x:Key="TaskBarIcon"
+                    IconSource="/Red.ico"
+                    ToolTipText="MiniImageDownloader"
+                    DoubleClickCommand="{Binding ShowWindowCommand}"
+                    
+                    ContextMenu="{StaticResource SysTrayMenu}"
+                    >
+
+        <tb:TaskbarIcon.DataContext>
+            <view_model:TaskBarViewModel />
+        </tb:TaskbarIcon.DataContext>
+    </tb:TaskbarIcon>
+</ResourceDictionary>
