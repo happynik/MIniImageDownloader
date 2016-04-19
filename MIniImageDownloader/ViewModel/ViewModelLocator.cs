@@ -16,6 +16,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 using MIniImageDownloader.Model;
+using MIniImageDownloader.Service;
 
 namespace MIniImageDownloader.ViewModel
 {
@@ -44,6 +45,7 @@ namespace MIniImageDownloader.ViewModel
             ////}
 
             SimpleIoc.Default.Register<IImageService, ImageDownloader>();
+            SimpleIoc.Default.Register<IClipboardService, ClipboardService>();
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<TaskBarViewModel>();
