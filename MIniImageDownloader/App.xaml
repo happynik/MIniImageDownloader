@@ -11,7 +11,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="TaskBarIconResources.xaml" />
+                <ResourceDictionary Source="View/TaskBarIconResources.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <view_model:ViewModelLocator x:Key="Locator" d:IsDataSource="True" />

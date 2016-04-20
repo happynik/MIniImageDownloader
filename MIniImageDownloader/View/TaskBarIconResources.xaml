@@ -11,7 +11,7 @@
     </ContextMenu>
 
     <tb:TaskbarIcon x:Key="TaskBarIcon"
-                    IconSource="/Red.ico"
+                    IconSource="/View/Red.ico"
                     ToolTipText="MiniImageDownloader"
                     DoubleClickCommand="{Binding ShowWindowCommand}"
                     ContextMenu="{StaticResource SysTrayMenu}"
