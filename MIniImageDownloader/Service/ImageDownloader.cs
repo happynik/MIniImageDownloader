@@ -40,16 +40,18 @@ namespace MIniImageDownloader.Service
             var clipboardText = _clipboardService.GetText();
             try
             {
-                if (!IsImageUrl(clipboardText)) throw new Exception("");
+                if (!IsImageUrl(clipboardText)) throw new Exception("Link not contains image.");
 
                 GetImageStart(clipboardText);
 
-                var message = new NotificationMessage(WindowsManager.NotificationOpenWindow);
+                var message = new NotificationMessage(ViewsManager.NotificationOpenWindow);
                 Messenger.Default.Send(message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //TODO: get system notification
+                var message = new BallonNotificationMessage(ex.Message) {Title = "DOWNLOAD ERROR" };
+                Messenger.Default.Send(message);
             }
         }
 
@@ -82,13 +84,9 @@ namespace MIniImageDownloader.Service
                 _responseTask = _httpClient.GetAsync(new Uri(path, UriKind.RelativeOrAbsolute), _cancellationSource.Token);
                 response = await _responseTask;
             }
-            catch (TaskCanceledException ex)
+            catch (TaskCanceledException)
             {
                 return;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
             using (var imageStream = await response.Content.ReadAsStreamAsync())
             {

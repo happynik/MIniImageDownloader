@@ -26,6 +26,7 @@ namespace MIniImageDownloader
 
             _taskBarIcon = (TaskbarIcon)FindResource("TaskBarIcon");
             if (_taskBarIcon != null) _taskBarIcon.DataContext = locator.TaskBar;
+            ViewsManager.Instance.TaskBarIcon = _taskBarIcon;
 
             SetHotkey();
         }
@@ -50,7 +51,7 @@ namespace MIniImageDownloader
             };
             _hotkey.Pressed += delegate { ServiceLocator.Current.GetInstance<IImageService>().DownloadImage(); };
 
-            var window = WindowsManager.Instance.MainWindow;
+            var window = ViewsManager.Instance.MainWindow;
             if (!_hotkey.GetCanRegister(window))
             {
                 Console.WriteLine(

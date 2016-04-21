@@ -10,13 +10,9 @@
     <tb:TaskbarIcon x:Key="TaskBarIcon"
                     IconSource="/View/Red.ico"
                     ToolTipText="MiniImageDownloader"
-                    DoubleClickCommand="{Binding ShowWindowCommand}"
+                    
                     ContextMenu="{StaticResource SysTrayMenu}"
+                    MenuActivation="LeftOrRightClick"
                     >
-        <!--DataContext="{Binding Source={StaticResource Locator}, Path=TaskBarViewModel}"-->
-
-        <!--<tb:TaskbarIcon.DataContext>
-            <Binding Source="{StaticResource Locator}" Path="TaskBarViewModel"/>
-        </tb:TaskbarIcon.DataContext>-->
     </tb:TaskbarIcon>
 </ResourceDictionary>

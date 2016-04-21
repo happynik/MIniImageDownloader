@@ -14,7 +14,7 @@ namespace MIniImageDownloader.View
         public MainWindow()
         {
             InitializeComponent();
-            WindowsManager.Instance.MainWindow = this;
+            ViewsManager.Instance.MainWindow = this;
 
             //Loaded += MainWindow_Loaded;
         }
