@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Interop;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace MIniImageDownloader.View
@@ -13,13 +14,15 @@ namespace MIniImageDownloader.View
         public MainWindow()
         {
             InitializeComponent();
-            Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            WindowsManager.Instance.MainWindow = this;
+
+            Loaded += MainWindow_Loaded;
         }
 
-        private void NotificationMessageReceived(NotificationMessage messsage)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (messsage.Notification == GetType().Name)
-            Show();
+            var helper = new WindowInteropHelper(this);
+            App.SetHandle(this);
         }
 
         protected override void OnClosing(CancelEventArgs e)

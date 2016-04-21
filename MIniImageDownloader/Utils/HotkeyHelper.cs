@@ -3,12 +3,13 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace MIniImageDownloader
+namespace MIniImageDownloader.Utils
 {
     class HotkeyHelper
     {
         private Window _window;
 
+        #region Import methods
         [DllImport("User32.dll")]
         private static extern bool RegisterHotKey(
             [In] IntPtr hWnd,
@@ -20,6 +21,29 @@ namespace MIniImageDownloader
         private static extern bool UnregisterHotKey(
             [In] IntPtr hWnd,
             [In] int id);
+        #endregion
+
+        #region Instance
+        private static readonly object Locker = new object();
+        private static volatile HotkeyHelper _instance;
+        public static HotkeyHelper Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (Locker)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new HotkeyHelper();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
+        #endregion
 
         private HwndSource _source;
         private const int HOTKEY_ID = 9000;

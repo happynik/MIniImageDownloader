@@ -30,8 +30,11 @@ namespace MIniImageDownloader
         #endregion
 
         private MainWindow _mainWindow;
-
-        private MainWindow MainWindow => _mainWindow ?? (_mainWindow = new MainWindow());
+        public MainWindow MainWindow
+        {
+            get{ return _mainWindow ?? (_mainWindow = new MainWindow()); }
+            set { _mainWindow = value; }
+        }
 
         public const string NotificationOpenWindow = "OpenWindow";
         
@@ -46,6 +49,11 @@ namespace MIniImageDownloader
             {
                 Application.Current.Dispatcher.BeginInvoke(new Action(() => MainWindow.Show()));
             }
+        }
+
+        public void Init()
+        {
+            _mainWindow = new MainWindow();
         }
     }
 }

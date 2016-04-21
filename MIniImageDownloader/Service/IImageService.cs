@@ -6,6 +6,6 @@ namespace MIniImageDownloader.Service
     {
         BitmapImage ImageResult { get; }
 
-        void GetImageStart(string path);
+        void DownloadImage();
     }
 }
