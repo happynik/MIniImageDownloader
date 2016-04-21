@@ -28,10 +28,5 @@ namespace MIniImageDownloader.View
             base.OnClosing(e);
             Hide();
         }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-        }
     }
 }
