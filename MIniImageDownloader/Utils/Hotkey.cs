@@ -149,11 +149,17 @@ namespace MIniImageDownloader.Utils
 
             // It's possible that the _control itself has died: in that case, no need to unregister!
             var helper = new WindowInteropHelper(_windowControl);
-            _source.RemoveHook(HwndHook);
-            _source = null;
-            // Clean up after ourselves
-            if (UnregisterHotKey(helper.Handle, _id) == 0)
-            { throw new Win32Exception(); }
+            var handle = helper.Handle.ToInt64();
+            if (handle != 0)
+            {
+                _source.RemoveHook(HwndHook);
+                _source = null;
+                // Clean up after ourselves
+                if (UnregisterHotKey(helper.Handle, _id) == 0)
+                {
+                    throw new Win32Exception();
+                }
+            }
 
             // Clear the _control reference and register state
             _registered = false;

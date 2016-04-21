@@ -53,9 +53,14 @@ namespace MIniImageDownloader
 
             var window = WindowsManager.Instance.MainWindow;
             if (!_hotkey.GetCanRegister(window))
-            { Console.WriteLine("Whoops, looks like attempts to register will fail or throw an exception, show an error/visual user feedback"); }
+            {
+                Console.WriteLine(
+                    "Whoops, looks like attempts to register will fail or throw an exception, show an error/visual user feedback");
+            }
             else
-            { _hotkey.Register(window); }
+            {
+                _hotkey.Register(window);
+            }
         }
     }
 }
