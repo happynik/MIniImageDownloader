@@ -11,24 +11,28 @@ namespace MIniImageDownloader
     /// </summary>
     public partial class App : Application
     {
-        HotkeyHelper _hotkeyHelper;
-        TaskbarIcon _taskBarIcon;
+        private WindowsManager _windowsManager;
+
+        //readonly HotkeyHelper _hotkeyHelper;
+        private TaskbarIcon _taskBarIcon;
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
+            _windowsManager = WindowsManager.Instance;
+
             var locator = (ViewModelLocator)Current.Resources["Locator"];
 
             _taskBarIcon = (TaskbarIcon)FindResource("TaskBarIcon");
-            _taskBarIcon.DataContext = locator.TaskBar;
+            if (_taskBarIcon != null) _taskBarIcon.DataContext = locator.TaskBar;
 
-            _hotkeyHelper.Register(Current.MainWindow = new MainWindow());
+            //_hotkeyHelper.Register(Current.MainWindow = new MainWindow());
         }
 
         protected override void OnExit(ExitEventArgs e)
         {
-            _hotkeyHelper.Unregister();
+            //_hotkeyHelper.Unregister();
             base.OnExit(e);
         }
     }

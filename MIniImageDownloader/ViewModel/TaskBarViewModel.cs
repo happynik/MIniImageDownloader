@@ -1,14 +1,10 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using MIniImageDownloader.Service;
 
 namespace MIniImageDownloader.ViewModel
 {
@@ -23,15 +19,9 @@ namespace MIniImageDownloader.ViewModel
             _clipboardService = clipboardService;
         }
 
-        public ICommand ExitApplicationCommand
-        {
-            get { return new RelayCommand(() => Application.Current.Shutdown()); }
-        }
+        public ICommand ExitApplicationCommand => new RelayCommand(() => Application.Current.Shutdown());
 
-        public ICommand DownloadImageCommand
-        {
-            get { return new RelayCommand(DownloadImage); }
-        }
+        public ICommand DownloadImageCommand => new RelayCommand(DownloadImage);
 
         private void DownloadImage()
         {
@@ -39,8 +29,10 @@ namespace MIniImageDownloader.ViewModel
             var clipboardText = _clipboardService.GetText();
             if (IsImageUrl(clipboardText))
             {
-                _imageService.StartGetImage(clipboardText);
-                Messenger.Default.Send(new NotificationMessage(typeof(MainWindow).Name));
+                _imageService.GetImageStart(clipboardText);
+
+                var message = new NotificationMessage(WindowsManager.NotificationOpenWindow);
+                Messenger.Default.Send(message);
             }
             else
             {
@@ -48,7 +40,7 @@ namespace MIniImageDownloader.ViewModel
             }
         }
 
-        private bool IsImageUrl(string text)
+        private static bool IsImageUrl(string text)
         {
             var urlImageValidator = new Regex(@"(https?:)?//?[^\'""<>]+?\.(jpg|jpeg|gif|png)");
             return urlImageValidator.IsMatch(text);

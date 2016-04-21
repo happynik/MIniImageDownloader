@@ -12,10 +12,8 @@
   See http://www.galasoft.ch/mvvm
 */
 
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
-using MIniImageDownloader.Model;
 using MIniImageDownloader.Service;
 
 namespace MIniImageDownloader.ViewModel
@@ -51,18 +49,9 @@ namespace MIniImageDownloader.ViewModel
             SimpleIoc.Default.Register<TaskBarViewModel>();
         }
 
-        public MainViewModel Main
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
-        }
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
-        public TaskBarViewModel TaskBar
-        {
-            get { return ServiceLocator.Current.GetInstance<TaskBarViewModel>(); }
-        }
+        public TaskBarViewModel TaskBar => ServiceLocator.Current.GetInstance<TaskBarViewModel>();
 
 
         public static void Cleanup()

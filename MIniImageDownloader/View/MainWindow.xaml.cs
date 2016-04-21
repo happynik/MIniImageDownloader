@@ -1,20 +1,9 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace MIniImageDownloader
+namespace MIniImageDownloader.View
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
@@ -31,6 +20,18 @@ namespace MIniImageDownloader
         {
             if (messsage.Notification == GetType().Name)
             Show();
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            e.Cancel = true;
+            base.OnClosing(e);
+            Hide();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
         }
     }
 }

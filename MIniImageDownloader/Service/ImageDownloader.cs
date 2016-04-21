@@ -1,38 +1,31 @@
-﻿using GalaSoft.MvvmLight.Messaging;
-using MIniImageDownloader.ViewModel;
-using System;
-using System.Drawing;
-using System.Net;
+﻿using System;
 using System.Net.Http;
 using System.Windows.Media.Imaging;
+using GalaSoft.MvvmLight.Messaging;
 
-namespace MIniImageDownloader.Model
+namespace MIniImageDownloader.Service
 {
     class ImageDownloader : IImageService
     {
-        private BitmapImage _imageResult;
-        public BitmapImage ImageResult
-        {
-            get { return _imageResult; }
-        }
+        public BitmapImage ImageResult { get; private set; }
 
         public ImageDownloader()
         {
             
         }
 
-        public async void StartGetImage(string path)
+        public async void GetImageStart(string path)
         {
             var httpClient = new HttpClient();
             var result = await httpClient.GetAsync(new Uri(path, UriKind.RelativeOrAbsolute));
             using (var imageStream = await result.Content.ReadAsStreamAsync())
             {
-                _imageResult = new BitmapImage();
-                _imageResult.BeginInit();
-                _imageResult.CacheOption = BitmapCacheOption.OnLoad;
+                ImageResult = new BitmapImage();
+                ImageResult.BeginInit();
+                ImageResult.CacheOption = BitmapCacheOption.OnLoad;
                 //_imageResult.DecodePixelWidth = 30;
-                _imageResult.StreamSource = imageStream;
-                _imageResult.EndInit();
+                ImageResult.StreamSource = imageStream;
+                ImageResult.EndInit();
             }
             Messenger.Default.Send(new NotificationMessage("ImageComplete"));
         }

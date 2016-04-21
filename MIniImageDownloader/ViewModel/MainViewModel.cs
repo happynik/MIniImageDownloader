@@ -2,8 +2,8 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Media.Imaging;
 using System;
-using System.Drawing;
 using System.Windows;
+using MIniImageDownloader.Service;
 
 namespace MIniImageDownloader.ViewModel
 {
@@ -21,7 +21,7 @@ namespace MIniImageDownloader.ViewModel
     /// </summary>
     public class MainViewModel : ViewModelBase
     {
-        private IImageService _imageService;
+        private readonly IImageService _imageService;
 
         private BitmapImage _imageSource;
         public BitmapImage ImageSource

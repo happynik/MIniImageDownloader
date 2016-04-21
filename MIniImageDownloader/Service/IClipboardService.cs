@@ -1,4 +1,4 @@
-﻿namespace MIniImageDownloader.ViewModel
+﻿namespace MIniImageDownloader.Service
 {
     public interface IClipboardService
     {
