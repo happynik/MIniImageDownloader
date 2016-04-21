@@ -12,12 +12,13 @@ namespace MIniImageDownloader.Service
 {
     class ImageDownloader : IImageService
     {
-        private readonly IClipboardService _clipboardService;
-        private readonly HttpClient _httpClient;
-        private readonly ProgressMessageHandler _progressHandler;
-        private readonly CancellationTokenSource _cancellationSource;
         public const string ImageDownloadStartNotification = "ImageDownloadStart";
         public const string ImageDownloadCompleteNotification = "ImageDownloadComplete";
+        private readonly IClipboardService _clipboardService;
+
+        private readonly HttpClient _httpClient;
+        private CancellationTokenSource _cancellationSource;
+        private Task<HttpResponseMessage> _responseTask;
 
         public BitmapImage ImageResult { get; private set; }
 
@@ -25,13 +26,13 @@ namespace MIniImageDownloader.Service
         {
             _clipboardService = clipboardService;
 
-            _cancellationSource = new CancellationTokenSource();
-            _progressHandler = new ProgressMessageHandler();
-            _progressHandler.HttpReceiveProgress += (sender, args) =>
+            var progressHandler = new ProgressMessageHandler();
+            progressHandler.HttpReceiveProgress += (sender, args) =>
             {
                 OnReceiveProgress(args);
             };
-            _httpClient = HttpClientFactory.Create(_progressHandler);
+            _httpClient = HttpClientFactory.Create(progressHandler);
+            _cancellationSource = new CancellationTokenSource();
         }
 
         public void DownloadImage()
@@ -55,6 +56,7 @@ namespace MIniImageDownloader.Service
         public void Cleanup()
         {
             ImageResult = null;
+            _cancellationSource.Cancel();
         }
 
         private void OnReceiveProgress(ProgressChangedEventArgs args)
@@ -66,12 +68,23 @@ namespace MIniImageDownloader.Service
         private async void GetImageStart(string path)
         {
             Messenger.Default.Send(new NotificationMessage(ImageDownloadStartNotification));
+
+            if (_responseTask != null && 
+                !_responseTask.IsCompleted)
+            {
+                _cancellationSource.Cancel();
+            }
+
             HttpResponseMessage response;
             try
             {
-                response =
-                    await _httpClient.GetAsync(new Uri(path, UriKind.RelativeOrAbsolute));
-                //, _cancellationSource.Token);
+                _cancellationSource = new CancellationTokenSource();
+                _responseTask = _httpClient.GetAsync(new Uri(path, UriKind.RelativeOrAbsolute), _cancellationSource.Token);
+                response = await _responseTask;
+            }
+            catch (TaskCanceledException ex)
+            {
+                return;
             }
             catch (Exception ex)
             {
@@ -82,7 +95,6 @@ namespace MIniImageDownloader.Service
                 ImageResult = new BitmapImage();
                 ImageResult.BeginInit();
                 ImageResult.CacheOption = BitmapCacheOption.OnLoad;
-                //_imageResult.DecodePixelWidth = 30;
                 ImageResult.StreamSource = imageStream;
                 ImageResult.EndInit();
             }
