@@ -1,8 +1,7 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
+﻿using System;
 using System.Windows;
-using System.Windows.Navigation;
-using System;
 using System.Windows.Forms;
+using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.Practices.ServiceLocation;
 using MIniImageDownloader.Service;
 using MIniImageDownloader.Utils;

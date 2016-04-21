@@ -52,6 +52,11 @@ namespace MIniImageDownloader.Service
             }
         }
 
+        public void Cleanup()
+        {
+            ImageResult = null;
+        }
+
         private void OnReceiveProgress(ProgressChangedEventArgs args)
         {
             var message = new ReceiveProgressNotificationMessage("ImageDownloading", args.ProgressPercentage);

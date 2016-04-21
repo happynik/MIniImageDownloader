@@ -7,7 +7,7 @@
              
              d1p1:Ignorable="d" 
              ShutdownMode="OnExplicitShutdown"
-            StartupUri="View/MainWindow.xaml">
+            >
     
     <Application.Resources>
         <ResourceDictionary>

@@ -3,6 +3,8 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Media.Imaging;
 using System;
 using System.Windows;
+using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
 using MIniImageDownloader.Service;
 
 namespace MIniImageDownloader.ViewModel
@@ -57,6 +59,13 @@ namespace MIniImageDownloader.ViewModel
                 _progressVisibility = value;
                 RaisePropertyChanged(() => ProgressVisibility);
             }
+        }
+
+        public ICommand ClosingCommand => new RelayCommand(ClosingAction);
+        private void ClosingAction()
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => ImageSource = null));
+            _imageService.Cleanup();
         }
 
         /// <summary>

@@ -52,8 +52,7 @@ namespace MIniImageDownloader.ViewModel
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
         public TaskBarViewModel TaskBar => ServiceLocator.Current.GetInstance<TaskBarViewModel>();
-
-
+        
         public static void Cleanup()
         {
             // TODO Clear the ViewModels

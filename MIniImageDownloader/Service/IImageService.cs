@@ -7,5 +7,6 @@ namespace MIniImageDownloader.Service
         BitmapImage ImageResult { get; }
 
         void DownloadImage();
+        void Cleanup();
     }
 }
