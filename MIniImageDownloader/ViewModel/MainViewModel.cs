@@ -29,9 +29,33 @@ namespace MIniImageDownloader.ViewModel
             get { return _imageSource; }
             set
             {
-                if (_imageSource == value) return;
+                if (Equals(_imageSource, value)) return;
                 _imageSource = value;
                 RaisePropertyChanged(() => ImageSource);
+            }
+        }
+
+        private int _progress;
+        public int Progress
+        {
+            get { return _progress; }
+            set
+            {
+                if (_progress.Equals(value)) return;
+                _progress = value;
+                RaisePropertyChanged(() => Progress);
+            }
+        }
+
+        private bool _progressVisibility;
+        public bool ProgressVisibility
+        {
+            get { return _progressVisibility; }
+            set
+            {
+                if (_progressVisibility == value) return;
+                _progressVisibility = value;
+                RaisePropertyChanged(() => ProgressVisibility);
             }
         }
 
@@ -43,6 +67,7 @@ namespace MIniImageDownloader.ViewModel
             if (IsInDesignMode)
             {
                 // Code runs in Blend --> create design time data.
+                Progress = 50;
             }
             else
             {
@@ -52,18 +77,31 @@ namespace MIniImageDownloader.ViewModel
             _imageService = imageService;
 
             Messenger.Default.Register<NotificationMessage>(this, NotificationMessageReceived);
+            Messenger.Default.Register<ReceiveProgressNotificationMessage>(this, ReceiveProgressNotificationMessageRecieved);
+        }
+
+        private void ReceiveProgressNotificationMessageRecieved(ReceiveProgressNotificationMessage message)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => Progress = message.ProgressPercentage));
         }
 
         private async void NotificationMessageReceived(NotificationMessage message)
         {
-            if (message.Notification == "ImageComplete")
-            {
-                await Application.Current.Dispatcher.BeginInvoke(
-                    new Action(() =>
+            await Application.Current.Dispatcher.BeginInvoke(
+                new Action(() =>
+                {
+                    switch (message.Notification)
                     {
-                        ImageSource = _imageService.ImageResult;
-                    }));
-            }
+                        case ImageDownloader.ImageDownloadCompleteNotification:
+                            ImageSource = _imageService.ImageResult;
+                            ProgressVisibility = false;
+                            break;
+                        case ImageDownloader.ImageDownloadStartNotification:
+                            ImageSource = null;
+                            ProgressVisibility = true;
+                            break;
+                    }
+                }));
         }
     }
 }

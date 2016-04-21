@@ -8,9 +8,30 @@
         Title="MainWindow" Height="350" Width="525"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Visibility="Hidden">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Image Source="{Binding ImageSource}"
-               Margin="20"
-               />
+               Margin="20"/>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+            </Grid.RowDefinitions>
+
+            <ProgressBar Minimum="0" Maximum="100"
+                         Value="{Binding Progress}"
+                         Visibility="{Binding ProgressVisibility, Converter={StaticResource BooleanToVisibilityConverter}}"
+                         
+                         Grid.Row="1" Grid.Column="1"/>
+        </Grid>
     </Grid>
 </Window>
