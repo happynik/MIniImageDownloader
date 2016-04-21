@@ -16,13 +16,12 @@ namespace MIniImageDownloader.View
             InitializeComponent();
             WindowsManager.Instance.MainWindow = this;
 
-            Loaded += MainWindow_Loaded;
+            //Loaded += MainWindow_Loaded;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             var helper = new WindowInteropHelper(this);
-            App.SetHandle(this);
         }
 
         protected override void OnClosing(CancelEventArgs e)

@@ -19,7 +19,28 @@ namespace MIniImageDownloader
         private static Hotkey _hotkey;
         private TaskbarIcon _taskBarIcon;
 
-        public static void SetHandle(Window window)
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            var locator = (ViewModelLocator)Current.Resources["Locator"];
+
+            _taskBarIcon = (TaskbarIcon)FindResource("TaskBarIcon");
+            if (_taskBarIcon != null) _taskBarIcon.DataContext = locator.TaskBar;
+
+            SetHotkey();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            if (_hotkey.Registered)
+            {
+                _hotkey.Unregister();
+            }
+            base.OnExit(e);
+        }
+
+        private void SetHotkey()
         {
             _hotkey = new Hotkey
             {
@@ -30,29 +51,11 @@ namespace MIniImageDownloader
             };
             _hotkey.Pressed += delegate { ServiceLocator.Current.GetInstance<IImageService>().DownloadImage(); };
 
+            var window = WindowsManager.Instance.MainWindow;
             if (!_hotkey.GetCanRegister(window))
             { Console.WriteLine("Whoops, looks like attempts to register will fail or throw an exception, show an error/visual user feedback"); }
             else
             { _hotkey.Register(window); }
-        }
-
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            var locator = (ViewModelLocator)Current.Resources["Locator"];
-
-            _taskBarIcon = (TaskbarIcon)FindResource("TaskBarIcon");
-            if (_taskBarIcon != null) _taskBarIcon.DataContext = locator.TaskBar;
-        }
-
-        protected override void OnExit(ExitEventArgs e)
-        {
-            if (_hotkey.Registered)
-            {
-                _hotkey.Unregister();
-            }
-            base.OnExit(e);
         }
     }
 }

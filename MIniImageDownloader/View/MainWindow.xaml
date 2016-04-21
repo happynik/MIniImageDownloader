@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MIniImageDownloader"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525"
-        DataContext="{Binding Main, Source={StaticResource Locator}}">
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        Visibility="Hidden">
     <Grid>
         <Image Source="{Binding ImageSource}"
                Margin="20"

@@ -121,7 +121,9 @@ namespace MIniImageDownloader.Utils
 
             // Register the hotkey
             var helper = new WindowInteropHelper(windowControl);
-            _source = HwndSource.FromHwnd(helper.Handle);
+            var currentHandle = helper.Handle.ToInt64();
+            var handle = currentHandle == 0 ? helper.EnsureHandle() : helper.Handle;
+            _source = HwndSource.FromHwnd(handle);
             _source.AddHook(HwndHook);
             if (RegisterHotKey(helper.Handle, _id, modifiers, _keyCode) == 0)
             {
